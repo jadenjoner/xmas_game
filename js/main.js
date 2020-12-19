@@ -69,9 +69,8 @@ function login(code, no=true){
         if(a == URLCode){
           user.points += 200;
           user.urlCodes.splice(i, 1);
+          backup();
           alert('You got 200 points. Please close this tab');
-          window.close();
-          window.location = 'https://duck.com';
         }
       })
 
