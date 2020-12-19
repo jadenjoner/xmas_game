@@ -31,7 +31,7 @@ function page(a){
 page(pages.login)
 
 
-
+var initialLogin = true;
 function login(code, no=true){
   var tUser;
   if(typeof code != 'object'){
@@ -62,6 +62,23 @@ function login(code, no=true){
       page(pages.home);
       backup();
     }
+    if(initialLogin){
+      var URLCode = new URLSearchParams(window.location.search).get('a');
+      user.urlCodes.forEach((a, i) => {
+        console.log(a);
+        if(a == URLCode){
+          user.points += 200;
+          user.urlCodes.splice(i, 1);
+          alert('You got 200 points. Please close this tab');
+          window.close();
+          window.location = 'https://duck.com';
+        }
+      })
+
+      page(1);
+      backup();
+    }
+    initialLogin = false;
   }else if(no) {
     msgPopup.show([{type:'h2', value: 'Ah Ah Ah You didnt say the magic word!'}, {type: 'img', src: 'https://thumbs.gfycat.com/BlissfulDisguisedKangaroo-size_restricted.gif', width: '100%'}])
     return;
@@ -70,6 +87,7 @@ function login(code, no=true){
 }
 
 function backup(){
+  if(user.points < 0)user.points = 0;
   localStorage.setItem('user', JSON.stringify(user));
   localStorage.setItem('questions', JSON.stringify(questions));
 }
@@ -122,13 +140,4 @@ function showQuestion(i){
 restore();
 
 
-
-var URLCode = new URLSearchParams(window.location.search).get('a');
-user.urlCodes.forEach((a, i) => {
-  if(a == URLCode){
-    user.points += 200;
-    user.urlCodes.splice(i, 1);
-    alert('You got 200 points. You can close this tab')
-    document.write('')
-  }
-})
+setInterval(backup, 3000);
