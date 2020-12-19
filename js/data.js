@@ -974,7 +974,7 @@ function buyGift(i){
     page(3)
     msgPopup.show([{
       type: 'h2',
-      value: 'Redeem your code:'
+      value: 'Open one of your gifts'
     },{
       type: 'code',
       value: giftCode,
